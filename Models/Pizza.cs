@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using RazorPagesPizza.Models;
+using RazorPagesPizza.Services;
 
 namespace RazorPagesPizza.Models;
 
@@ -16,3 +18,13 @@ public class Pizza
 }
 
 public enum PizzaSize { Small, Medium, Large }
+
+[BindProperty]
+public Pizza NewPizza { get; set; }
+
+public string GlutenFreeText(Pizza pizza)
+{
+    if (pizza.IsGlutenFree)
+        return "Gluten Free";
+    return "Not Gluten Free";
+}
