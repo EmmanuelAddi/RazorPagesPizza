@@ -17,5 +17,5 @@ public class IndexModel : PageModel
         pizzas = PizzaService.GetAll();
     }
 
-    public List<Pizza> pizzas = new();
+    // public List<Pizza> pizzas = new();
 }

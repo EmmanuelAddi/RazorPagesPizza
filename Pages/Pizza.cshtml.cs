@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RazorPagesPizza.Models;
+using RazorPagesPizza.Services;
 
 namespace RazorPagesPizza.Pages
 {
@@ -7,25 +9,42 @@ namespace RazorPagesPizza.Pages
     {
         public void OnGet()
         {
+            pizzas = PizzaService.GetAll();
         }
-    }
 
-    public IActionResult OnPost()
-    {
-        if (!ModelState.IsValid)
+        public List<Pizza> pizzas = new();
+
+        public IActionResult OnPost()
         {
-            return Page();
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            PizzaService.Add(NewPizza);
+            return RedirectToAction("Get");
         }
-        PizzaService.Add(NewPizza);
-        return RedirectToAction("Get");
-    }
 
-    [BindProperty]
-    public Pizza NewPizza { get; set; } = new();
+        public IActionResult OnPostDelete(int id)
+        {
+            PizzaService.Delete(id);
+            return RedirectToAction("Get");
+        }
 
-    public IActionResult OnPostDelete(int id)
-    {
-        PizzaService.Delete(id);
-        return RedirectToAction("Get");
+        [BindProperty]
+        public Pizza NewPizza { get; set; } = new();
+
+        public string GlutenFreeText(Pizza pizza)
+        {
+            if (pizza.IsGlutenFree)
+                return "Gluten Free";
+            return "Not Gluten Free";
+        }
+
     }
 }
+
+
+
+  
+
